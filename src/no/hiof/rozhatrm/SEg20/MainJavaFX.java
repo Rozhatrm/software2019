@@ -71,7 +71,7 @@ public class MainJavaFX extends Application {
 
             // Henter ut kontrolleren som er knyttet til fxml'en
             RedigerArrangementController redigerController = fxmlLoader.getController();
-            // Setter hvilken film som skal redigeres
+            // Setter hvilken arrangement som skal redigeres
             redigerController.setArrangementSomSkalRedigeres(arrangementSomSkalRedigeres);
 
             // Viser dialogvinduet, og venter med å gå videre til det er lukket

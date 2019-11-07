@@ -17,16 +17,17 @@ public class DataHandler {
     }
 
     private static void genererArrangementData() {
-        arrangementListe.add(new Arrangement("5km løping",
-                "Vi gleder oss! Kom og delta på årets tøffeste løp! Vinneren stikker av med 200 000 kr.\n\nFredrikstad sentrum, Stor gata 10" ,
+        arrangementListe.add(new Arrangement("Løping",
+                "Vi gleder oss! Kom og delta på årets tøffeste løp! Vinneren stikker av med 200 000 kr.\n\nStor gata 10, Fredrikstad sentrum" ,
                 1430,
                 LocalDate.of(2019, 12, 27)));
-        arrangementListe.add(new Arrangement("500m Svømming",
+        arrangementListe.add(new Arrangement("Svømming",
                 "Endelig nærmer vi oss den store dagen. Bli med og delta på Norges største svømme konkuranse.\n\nTunevannet, Sarpsborg",
                 1240,
                 LocalDate.of(2020, 1, 21)));
+        arrangementListe.add(new Arrangement("Ski løp", "Ski sesongen nærmer seg, og vi varmer opp med 10 km ski løp. Bli med på morroa.\n\nBRA veien 3, Halden" , 1700,
+                LocalDate.of(2020,2,10)));
     }
-
 
 
     private final static ObservableList<Deltager> deltagerListe = FXCollections.observableArrayList();

@@ -7,6 +7,7 @@ public abstract class Arrangor {
     private int tidspunkt;
     private LocalDate dato;
 
+
     public Arrangor(String tittel, String beskrivelse, int tidspunkt, LocalDate Dato) {
         this.tittel = tittel;
         this.beskrivelse = beskrivelse;

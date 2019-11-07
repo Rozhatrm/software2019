@@ -61,6 +61,8 @@
             <ListView fx:id="deltagerListView" layoutX="5.0" layoutY="392.0" prefHeight="114.0" prefWidth="477.0" />
             <Label layoutX="5.0" layoutY="375.0" text="Deltagere" />
             <Button fx:id="meldPaaButton" layoutX="5.0" layoutY="518.0" mnemonicParsing="false" onAction="#redigerDeltagerClicked" prefWidth="143.0" text="Rediger Deltager" />
+            <Button fx:id="meldPaaKnapp" layoutX="184.0" layoutY="518.0" mnemonicParsing="false" onAction="#meldPaaKnappClicked" text="Meld på Deltager" />
+            <Button fx:id="slettDeltagerButton" layoutX="349.0" layoutY="518.0" mnemonicParsing="false" onAction="#slettDeltagerClicked" text="Slett Deltager" />
             </children>
         </AnchorPane>
     </center>

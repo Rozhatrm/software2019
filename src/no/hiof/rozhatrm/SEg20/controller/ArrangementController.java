@@ -97,8 +97,8 @@ public class ArrangementController {
                 }
                 else {
                     Alert alertDialog = new Alert(Alert.AlertType.INFORMATION);
-                    alertDialog.setTitle("Ingen arrangement valgt");
-                    alertDialog.setHeaderText("Vennligst velg en arrangement");
+                    alertDialog.setTitle("Ingen deltager valgt");
+                    alertDialog.setHeaderText("Vennligst velg en deltager");
                     alertDialog.showAndWait();
                 }
             }
@@ -117,9 +117,7 @@ public class ArrangementController {
 
     private void oppdaterDeltagerDetaljer (Deltager enDeltager) {
 
-        if (enDeltager != null) {
-            beskrivelseTextArea.setText(enDeltager.getFulltNavn());
-        }
+
     }
 
 
@@ -166,6 +164,38 @@ public class ArrangementController {
         }
     }
 
+
+    public void meldPaaKnappClicked (ActionEvent actionEvent) {
+        Deltager nyDeltager = new Deltager();
+
+        boolean nyDeltagerVellyket = MainJavaFX.getInstance().meldPaaVisning(nyDeltager);
+
+        if (nyDeltagerVellyket) {
+            DataHandler.hentDeltagerData().add(nyDeltager);
+
+            deltagerListView.getSelectionModel().select(nyDeltager);
+        }
+    }
+
+
+    @FXML
+    public void slettDeltagerClicked(ActionEvent actionEvent){
+        Deltager enDeltager = deltagerListView.getSelectionModel().getSelectedItem();
+
+        if (enDeltager != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Slette deltager");
+            alert.setHeaderText(null);
+            alert.setContentText("Er du sikker på at du ønsker å slette deltager " + enDeltager.getFulltNavn() + "?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.orElse(ButtonType.OK) == ButtonType.OK) {
+                deltagerListView.getSelectionModel().selectPrevious();
+                DataHandler.hentDeltagerData().remove(enDeltager);
+            }
+        }
+    }
 
 
     @FXML
