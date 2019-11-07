@@ -23,7 +23,7 @@ public class RedigerArrangementController {
 
     // Feltvariabler som tilhører RedigerArrangementController, som ikke finnes i FXML fil
     private Stage dialogStage;
-    // Filmen vi skal redigere
+    // Arrangement vi skal redigere
     private Arrangement arrangementSomRedigeres;
     private boolean okClicked = false;
 

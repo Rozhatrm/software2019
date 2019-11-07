@@ -1,5 +1,6 @@
 package no.hiof.rozhatrm.SEg20.controller;
 
+import com.sun.tools.javac.Main;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -10,6 +11,7 @@ import javafx.scene.text.Text;
 import no.hiof.rozhatrm.SEg20.MainJavaFX;
 import no.hiof.rozhatrm.SEg20.data.DataHandler;
 import no.hiof.rozhatrm.SEg20.model.Arrangement;
+import no.hiof.rozhatrm.SEg20.model.Deltager;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -18,6 +20,8 @@ public class ArrangementController {
 
     @FXML
     private ListView<Arrangement> arrangementListView;
+    @FXML
+    private ListView<Deltager> deltagerListView;
     @FXML
     private Text tittelText;
     @FXML
@@ -32,7 +36,7 @@ public class ArrangementController {
     @FXML
     private void initialize() {
         arrangementListView.setItems(DataHandler.hentArrangementData());
-
+        deltagerListView.setItems(DataHandler.hentDeltagerData());
 
         redigerButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -67,14 +71,59 @@ public class ArrangementController {
         arrangementListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Arrangement>() {
             @Override
             public void changed(ObservableValue<? extends Arrangement> observableValue, Arrangement gammelFilm, Arrangement nyFilm) {
-                // Oppdaterer den detaljerte visningen av en film
+                // Oppdaterer den detaljerte visningen av et arrangement
                 oppdaterArrangementDetaljer(nyFilm);
             }
         });
 
         // Velger første element i lista, slik at det er valgt når vi starter programmet
         arrangementListView.getSelectionModel().selectFirst();
+
+
+
+        meldPaaButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Deltager deltagerSomSkalRedigeres = deltagerListView.getSelectionModel().getSelectedItem();
+
+                if(deltagerSomSkalRedigeres != null) {
+                    boolean deltagerRedigert = MainJavaFX.getInstance().meldPaaVisning(deltagerSomSkalRedigeres);
+
+                    if (deltagerRedigert) {
+                        deltagerListView.getSelectionModel().selectFirst();
+                        deltagerListView.getSelectionModel().select(deltagerSomSkalRedigeres);
+                        oppdaterDeltagerDetaljer(deltagerSomSkalRedigeres);
+                    }
+                }
+                else {
+                    Alert alertDialog = new Alert(Alert.AlertType.INFORMATION);
+                    alertDialog.setTitle("Ingen arrangement valgt");
+                    alertDialog.setHeaderText("Vennligst velg en arrangement");
+                    alertDialog.showAndWait();
+                }
+            }
+        });
+
+        deltagerListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Deltager>() {
+            @Override
+            public void changed(ObservableValue<? extends Deltager> observableValue, Deltager gammelDeltager, Deltager nyDeltager) {
+                oppdaterDeltagerDetaljer(nyDeltager);
+            }
+        });
+
+        deltagerListView.getSelectionModel().selectFirst();
+
     }
+
+    private void oppdaterDeltagerDetaljer (Deltager enDeltager) {
+
+        if (enDeltager != null) {
+            beskrivelseTextArea.setText(enDeltager.getFulltNavn());
+        }
+    }
+
+
+
 
     private void oppdaterArrangementDetaljer(Arrangement enArrangement) {
 
@@ -83,9 +132,7 @@ public class ArrangementController {
             tittelText.setText(enArrangement.getTittel());
             // Setter beskrivelsen til beskrivelsetekstfeltet
             beskrivelseTextArea.setText(enArrangement.getBeskrivelse());
-            // Sjekker om filmens utgivelsesdato er MIN
-            // Hvis den ikke er det, legger vi utgivelsesdatoen til i tekstfeltet
-            // Hvis den er MIN, setter vi tekstfeltet til å være tomt
+
             datoTextField.setText(enArrangement.getDato() != LocalDate.MIN ? enArrangement.getDato().toString() : "");
 
             klokkeslettTextField.setText(enArrangement.getTidspunkt() > 0 ? enArrangement.getTidspunkt() + " " : "");
@@ -106,10 +153,17 @@ public class ArrangementController {
         }
     }
 
-    public void meldPaaDeltagerClicked(ActionEvent actionEvent){
-        MainJavaFX javaFXapp = MainJavaFX.getInstance();
+    public void redigerDeltagerClicked(ActionEvent actionEvent){
 
-        javaFXapp.meldPaaVisning();
+        Deltager nyDeltager = new Deltager();
+
+        boolean nyDeltagerVellyket = MainJavaFX.getInstance().meldPaaVisning(nyDeltager);
+
+        if (nyDeltagerVellyket) {
+            DataHandler.hentDeltagerData().add(nyDeltager);
+
+            deltagerListView.getSelectionModel().select(nyDeltager);
+        }
     }
 
 

@@ -56,7 +56,7 @@ public class Deltager {
     @Override
     public String toString() {
         // Har en "hurtig-if" som sjekker om fodselsdato er lik minimumsverdi, er den det skrives det bare en tom streng, har den en verdi skriver vi ut "født i år " etterflugt av året
-        return fornavn + " " + etternavn + (fodselsDato.equals(LocalDate.MIN) ? "" : " født i år " + fodselsDato.getYear()) ;
+        return fornavn + " " + etternavn + (fodselsDato.equals(LocalDate.MIN) ? "" : " (" + fodselsDato.getDayOfMonth() +"." + fodselsDato.getMonthValue()+ "." + fodselsDato.getYear() + ")") ;
     }
 }
 

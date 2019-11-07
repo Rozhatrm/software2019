@@ -38,8 +38,9 @@ public class DataHandler {
     }
 
     private static void genererDeltagerData() {
-        deltagerListe.add(new Deltager("Ole", "Hanse", LocalDate.of(1997,10,10)));
+        deltagerListe.add(new Deltager("Ole", "Hansen", LocalDate.of(1997,10,10)));
         deltagerListe.add(new Deltager("Per", "Persen", LocalDate.of(1999,9,9)));
+        deltagerListe.add(new Deltager("Martine","Nielsen",LocalDate.of(2000,7,7)));
     }
 
 

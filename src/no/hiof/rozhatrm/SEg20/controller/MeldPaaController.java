@@ -1,52 +1,105 @@
 package no.hiof.rozhatrm.SEg20.controller;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import no.hiof.rozhatrm.SEg20.MainJavaFX;
-import no.hiof.rozhatrm.SEg20.data.DataHandler;
-import no.hiof.rozhatrm.SEg20.model.Arrangement;
 import no.hiof.rozhatrm.SEg20.model.Deltager;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 public class MeldPaaController {
+    // Alle feltvariablene for komponenter definert i tilhørende .fxml
     @FXML
-    private ListView<Deltager> deltagerListView;
+    private TextArea fornavnTextArea, etternavnTextArea;
     @FXML
-    private Text tittelText;
+    private DatePicker fodselsdatoPicker;
     @FXML
-    private TextField utgivelsesdatoTextField, spilletidTextField;
+    private Label feilmeldingLabel;
     @FXML
-    private TextArea beskrivelseTextArea;
-    @FXML
-    private Button redigerButton;
+    private Button okButton;
 
+    // Feltvariabler som tilhører RedigerArrangementController, som ikke finnes i FXML fil
+    private Stage dialogStage;
+    // Filmen vi skal redigere
+    private Deltager deltagerSomRedigeres;
+    private boolean okClicked = false;
+
+    // Metode initialize som blir kalt etter at den tilhørende fxml'en er lastet inn
     @FXML
     private void initialize() {
-        deltagerListView.setItems(DataHandler.hentDeltagerData());
-
-
-        deltagerListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Deltager>() {
-            @Override
-            public void changed(ObservableValue<? extends Deltager> observableValue, Deltager gammelDeltager, Deltager nyDeltager) {
-                oppdaterDeltagerDetaljer(nyDeltager);
-            }
-        });
-
-        deltagerListView.getSelectionModel().selectFirst();
-
+        // Setter at okButton skal være "hovedknappen", dette gjør at den blir "kalt" når vi trykker ENTER
+        okButton.setDefaultButton(true);
     }
 
-    private void oppdaterDeltagerDetaljer(Deltager enDeltager) {
-        if(enDeltager != null) {
-            beskrivelseTextArea.setText(enDeltager.getFulltNavn());
+    public void setDeltagerSomSkalRedigeres(Deltager deltagerSomRedigeres) {
+        // Setter hvilken arrangement som skal redigeres
+        this.deltagerSomRedigeres = deltagerSomRedigeres;
+
+        // Sjekker om arrangement har en verdi, eller er null,
+        // har den en verdi skal den redigeres og vi fyller inn data fra den
+        if (deltagerSomRedigeres != null) {
+
+            fornavnTextArea.setText(deltagerSomRedigeres.getFornavn());
+            etternavnTextArea.setText(deltagerSomRedigeres.getEtternavn());
+            if (!deltagerSomRedigeres.getFodselsDato().equals(LocalDate.MIN))
+                fodselsdatoPicker.setValue(deltagerSomRedigeres.getFodselsDato());
+
+        }
+    }
+
+    @FXML
+    private void okValgt() {
+        // Sjekker om inputfeltene er gyldige
+        if (sjekkOmInputErGyldig()) {
+            // Hvis de er det, fyller vi opp arrangementobjektet vårt med den nye dataen fra feltene
+            deltagerSomRedigeres.setFornavn(fornavnTextArea.getText());
+            deltagerSomRedigeres.setEtternavn(etternavnTextArea.getText());
+            if (fodselsdatoPicker.getValue() != null)
+                deltagerSomRedigeres.setFodselsDato(fodselsdatoPicker.getValue());
+
+
+            // Setter at vi avsluttet ved å trykke OK
+            okClicked = true;
+
+            // Henter ut en referanse til Stage (vinduet) ved hjelp av en av komponentene vi har i grensesnittet
+            dialogStage = (Stage)okButton.getScene().getWindow();
+            // Lukker vinduet
+            dialogStage.close();
+        }
+    }
+
+    @FXML
+    private void avbrytValgt() {
+        // Henter ut en referanse til Stage (vinduet) ved hjelp av en av komponentene vi har i grensesnittet
+        dialogStage = (Stage)okButton.getScene().getWindow();
+        // Lukker vinduet uten å gjøre noe mer (okClicked er fortsatt false)
+        dialogStage.close();
+    }
+
+
+    public boolean erOkValgt() {
+        // Mulighet til å hente ut om vi avsluttet ved hjelp av OK eller ikke
+        return okClicked;
+    }
+
+    private boolean sjekkOmInputErGyldig() {
+        // Lager en string vi fyller opp med feilmeldinger for visning til brukeren
+        String feilmelding = "";
+
+        // Sjekker om det er noe innhold i titteltekstfeltet (et arrangement MÅ ha en tittel)
+
+
+
+        // Sjekker om vi har noen feilmelding eller ikke
+        if (feilmelding.length() == 0) {
+            // Returner true, som i at vi ikke har noen feilmeldinger og all input er gyldig
+            return true;
+        }
+        else {
+            // Skriv info til feilmeldingslabel som blir vist til brukeren
+            feilmeldingLabel.setText("Vennligs rett følgende feil:\n" + feilmelding);
+            // Returner false, som sier at input ikke er gyldig
+            return false;
         }
     }
 }

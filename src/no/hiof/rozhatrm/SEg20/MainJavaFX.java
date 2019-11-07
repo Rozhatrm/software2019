@@ -7,8 +7,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import no.hiof.rozhatrm.SEg20.controller.MeldPaaController;
 import no.hiof.rozhatrm.SEg20.controller.RedigerArrangementController;
 import no.hiof.rozhatrm.SEg20.model.Arrangement;
+import no.hiof.rozhatrm.SEg20.model.Deltager;
 
 import java.io.IOException;
 
@@ -30,9 +32,9 @@ public class MainJavaFX extends Application {
 
             fxmlLoader.setLocation(getClass().getResource("view/Arrangementer.fxml"));
 
-            Parent filmOversiktLayout = fxmlLoader.load();
+            Parent arrangementOversiktLayout = fxmlLoader.load();
 
-            Scene hovedScene = new Scene(filmOversiktLayout, 1000, 600);
+            Scene hovedScene = new Scene(arrangementOversiktLayout, 1000, 600);
 
             primaryStage.setScene(hovedScene);
 
@@ -86,26 +88,31 @@ public class MainJavaFX extends Application {
     }
 
 
-    public void meldPaaVisning(){
+    public boolean meldPaaVisning(Deltager deltagerSomSkalRedigeres){
         try {
-            FXMLLoader fxmlLaster = new FXMLLoader();
-            fxmlLaster.setLocation(getClass().getResource("view/MeldPaaDeltager.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader();
 
-            Parent hovedScene = fxmlLaster.load();
+            fxmlLoader.setLocation(getClass().getResource("view/MeldPaaDeltager.fxml"));
+            Parent dialogLayout = fxmlLoader.load();
 
-            Scene hovedSkjerm = new Scene(hovedScene, 1000,450);
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Meld paa deltager");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
 
-            Stage leggtilNyDeltagerStage = new Stage();
-            leggtilNyDeltagerStage.initModality(Modality.APPLICATION_MODAL);
-            leggtilNyDeltagerStage.initOwner(primaryStage);
+            Scene dialogScene = new Scene(dialogLayout);
+            dialogStage.setScene(dialogScene);
 
-            leggtilNyDeltagerStage.setScene(hovedSkjerm);
-            leggtilNyDeltagerStage.setTitle("LeggTilNyDeltager");
-            leggtilNyDeltagerStage.showAndWait();
+            MeldPaaController meldPaaController = fxmlLoader.getController();
+            meldPaaController.setDeltagerSomSkalRedigeres(deltagerSomSkalRedigeres);
+
+            dialogStage.showAndWait();
+
+            return meldPaaController.erOkValgt();
         }
         catch (IOException ioe){
             visAlert("Feil");
-
+            return false;
         }
     }
 

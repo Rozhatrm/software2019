@@ -58,9 +58,9 @@
                         <Button fx:id="slettButton" mnemonicParsing="false" onAction="#slettButtonClicked" text="Slett" />
                     </children>
                 </HBox>
-            <ListView fx:id="deltagerliste" layoutX="5.0" layoutY="392.0" prefHeight="114.0" prefWidth="477.0" />
+            <ListView fx:id="deltagerListView" layoutX="5.0" layoutY="392.0" prefHeight="114.0" prefWidth="477.0" />
             <Label layoutX="5.0" layoutY="375.0" text="Deltagere" />
-            <Button fx:id="meldPaaButton" layoutX="5.0" layoutY="518.0" mnemonicParsing="false" onAction="#meldPaaDeltagerClicked" prefWidth="143.0" text="Meld deg på" />
+            <Button fx:id="meldPaaButton" layoutX="5.0" layoutY="518.0" mnemonicParsing="false" onAction="#redigerDeltagerClicked" prefWidth="143.0" text="Rediger Deltager" />
             </children>
         </AnchorPane>
     </center>
