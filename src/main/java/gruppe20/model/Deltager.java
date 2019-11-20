@@ -9,11 +9,6 @@ public class Deltager {
     private LocalDate fodselsDato;
 
 
-    public Deltager(String fornavn, String etternavn) {
-        this.fornavn = fornavn;
-        this.etternavn = etternavn;
-        fodselsDato = LocalDate.MIN;
-    }
 
     public Deltager(String fornavn, String etternavn, LocalDate fodselsDato) {
         this.fornavn = fornavn;

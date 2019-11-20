@@ -87,6 +87,7 @@ public class MeldPaaController {
     public boolean sjekkOmInputErGyldig() {
         // Lager en string vi fyller opp med feilmeldinger for visning til brukeren
         String feilmelding = "";
+        LocalDate today = LocalDate.now();
 
         // Sjekk om deltager har fornavn
         if (fornavnTextArea.getText() == null || fornavnTextArea.getText().length() == 0){
@@ -134,6 +135,7 @@ public class MeldPaaController {
             // Returner false, som sier at input ikke er gyldig
             return false;
         }
+
     }
 
 }
